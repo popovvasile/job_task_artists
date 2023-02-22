@@ -7,13 +7,13 @@ DATABASE_URL = "postgresql://klaus:password@localhost:5432/immomio"
 engine = create_engine(
     DATABASE_URL, echo=True
 )
-session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+Session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
 
 
 def get_db():
-    db = session()
+    db = Session()
     try:
         yield db
     finally:

@@ -18,7 +18,7 @@ class Config(BaseSettings):
     SENTRY_SDN: str = None
     REDIS_HOST: str = "localhost"
     REDIS_PORT: int = 6379
-    FREQUENCY: int = 5
+    FREQUENCY: int = 60
     SPOTIFY_CLIENT_ID: str = os.getenv("CLIENT_ID")
     SPOTIFY_CLIENT_SECRET: str = os.getenv("CLIENT_SECRET")
 
