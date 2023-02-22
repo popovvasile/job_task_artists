@@ -6,8 +6,8 @@ from fastapi_utils.tasks import repeat_every
 from fastapi import HTTPException, status, APIRouter, Response
 
 from models.artist import Artist
-from schemas import ArtistBaseSchema
 from config import Config
+from schemas.schemas import ArtistBaseSchema
 from services.artist import ArtistsService
 from session import session
 

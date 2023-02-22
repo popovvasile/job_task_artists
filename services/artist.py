@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 from config import Config
 from models.artist import Artist
 # from app.standalone_session import standalone_session
-from utils.db import Transactional
+from utils.db_utils import Transactional
 
 
 class ArtistsService:
