@@ -1,15 +1,12 @@
-from datetime import datetime
 from typing import List, Optional
 from pydantic import BaseModel, Field
 
 
 class ArtistBaseSchema(BaseModel):
-    id: int = Field(..., description="ID")
-    spotify_id: Optional[str] = Field(None, description="Spotify ID")
-    name: str = Field(..., description="Name")
-    created: datetime = Field(..., description="Created")
-    updated: datetime = Field(..., description="Updated")
-    edited: Optional[datetime] = Field(None, description="Edited")
+    spotify_id: str
+    popularity: Optional[str]
+    name: Optional[str]
+    genres: Optional[List[str]]
 
     class Config:
         orm_mode = True

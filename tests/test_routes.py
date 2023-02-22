@@ -28,8 +28,8 @@ def test_update_artist():
         "genres": ["rock", "pop"],
         "popularity": 50,
     }
-    client.post("/api/artists", json=artist_data)
-
+    response = client.post("/api/artists", json=artist_data)
+    assert response.status_code == 200
     updated_artist_data = {
         "title": "Updated Artist",
         "genres": ["pop"],
@@ -50,8 +50,8 @@ def test_get_artist():
         "genres": ["rock", "pop"],
         "popularity": 50,
     }
-    client.post("/api/artists", json=artist_data)
-
+    response = client.post("/api/artists", json=artist_data)
+    assert response.status_code == 200
     response = client.get(f'/api/artists/{artist_data["spotify_id"]}')
     assert response.status_code == 200
     assert response.json()["status"] == "success"
@@ -68,8 +68,8 @@ def test_delete_artist():
         "genres": ["rock", "pop"],
         "popularity": 50,
     }
-    client.post(f'/api/artists/{artist_data["spotify_id"]}', json=artist_data)
-
+    response = client.post("/api/artists", json=artist_data)
+    assert response.status_code == 200
     response = client.delete(f'/api/artists/{artist_data["spotify_id"]}')
     assert response.status_code == 204
 
