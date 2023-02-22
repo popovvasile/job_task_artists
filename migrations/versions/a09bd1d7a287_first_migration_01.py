@@ -1,8 +1,8 @@
-"""artists
+"""first_migration_01
 
-Revision ID: 147aad73536e
-Revises:
-Create Date: 2023-02-20 06:39:54.083506
+Revision ID: a09bd1d7a287
+Revises: 
+Create Date: 2023-02-22 04:16:38.336136
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '147aad73536e'
+revision = 'a09bd1d7a287'
 down_revision = None
 branch_labels = None
 depends_on = None

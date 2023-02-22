@@ -11,8 +11,8 @@ class Config(BaseSettings):
     DEBUG: bool = True
     APP_HOST: str = "0.0.0.0"
     APP_PORT: int = 8080
-    WRITER_DB_URL: str = f"postgresql+asyncpg://klaus:password@localhost:6500/immomio"
-    READER_DB_URL: str = f"postgresql+asyncpg://klaus:password@localhost:6500/immomio"
+    WRITER_DB_URL: str = f"postgresql://klaus:password@localhost:6500/immomio"
+    READER_DB_URL: str = f"postgresql://klaus:password@localhost:6500/immomio"
     JWT_SECRET_KEY: str = "fastapi"
     JWT_ALGORITHM: str = "HS256"
     SENTRY_SDN: str = None
@@ -24,21 +24,21 @@ class Config(BaseSettings):
 
 
 class DevelopmentConfig(Config):
-    WRITER_DB_URL: str = f"postgresql+asyncpg://klaus:password@localhost:6500/immomio"
-    READER_DB_URL: str = f"postgresql+asyncpg://klaus:password@localhost:6500/immomio"
+    WRITER_DB_URL: str = f"postgresql://klaus:password@localhost:6500/immomio"
+    READER_DB_URL: str = f"postgresql://klaus:password@localhost:6500/immomio"
     REDIS_HOST: str = "redis"
     REDIS_PORT: int = 6379
 
 
 class LocalConfig(Config):
-    WRITER_DB_URL: str = f"postgresql+asyncpg://klaus:password@localhost:6500/immomio"
-    READER_DB_URL: str = f"postgresql+asyncpg://klaus:password@localhost:6500/immomio"
+    WRITER_DB_URL: str = f"postgresql://klaus:password@localhost:6500/immomio"
+    READER_DB_URL: str = f"postgresql://klaus:password@localhost:6500/immomio"
 
 
 class ProductionConfig(Config):
     DEBUG: str = False
-    WRITER_DB_URL: str = f"postgresql+asyncpg://klaus:password@localhost:6500/prod"
-    READER_DB_URL: str = f"postgresql+asyncpg://klaus:password@localhost:6500/prod"
+    WRITER_DB_URL: str = f"postgresql://klaus:password@localhost:6500/prod"
+    READER_DB_URL: str = f"postgresql://klaus:password@localhost:6500/prod"
 
 
 def get_config():

@@ -1,14 +1,15 @@
-import asyncio
 
-from app import artist
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from artist import router
+from session import Base, engine
 
-async def init_models():
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.drop_all)
-        await conn.run_sync(Base.metadata.create_all)
+
+def init_models():
+    with engine.begin() as conn:
+        Base.metadata.drop_all
+        Base.metadata.create_all
 
 init_models()
 app = FastAPI()
@@ -26,7 +27,7 @@ app.add_middleware(
 )
 
 
-app.include_router(artist.router, tags=['Artists'], prefix='/api/artists')
+app.include_router(router, tags=['Artists'], prefix='/api/artists')
 
 
 @app.get("/api/healthchecker")

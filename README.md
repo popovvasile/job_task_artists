@@ -22,5 +22,4 @@
 
 ## To run locally, use the following commands:
 ```alembic upgrade head```
-
 ```uvicorn app.main:app --host localhost --port 8080 --reload```
