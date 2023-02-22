@@ -9,7 +9,7 @@ from models.artist import Artist
 from config import Config
 from schemas.schemas import ArtistBaseSchema
 from services.artist import ArtistsService
-from session import session
+from sessions.session import session
 
 router = APIRouter()
 

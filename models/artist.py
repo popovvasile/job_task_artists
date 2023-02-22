@@ -1,6 +1,6 @@
 from datetime import datetime
 from sqlalchemy import Column, String, DateTime, Integer, ARRAY
-from session import Base
+from sessions.session import Base
 
 
 class Artist(Base):

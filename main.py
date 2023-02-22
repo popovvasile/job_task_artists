@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from routes.artist import router
-from session import Base, engine
+from sessions.session import Base, engine
 
 
 def init_models():

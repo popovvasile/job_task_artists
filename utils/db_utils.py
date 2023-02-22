@@ -1,6 +1,6 @@
 from functools import wraps
 
-from session import session
+from sessions.session import session
 
 
 class Transactional:
