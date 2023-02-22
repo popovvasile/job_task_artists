@@ -9,7 +9,7 @@ from models.artist import Artist
 from config import Config
 from schemas.schemas import ArtistBaseSchema
 from services.artist import ArtistsService
-from sessions.session import Session
+from sessions.session import LocalSession
 
 router = APIRouter()
 
@@ -17,14 +17,14 @@ router = APIRouter()
 @router.on_event("startup")
 @repeat_every(seconds=Config().FREQUENCY, raise_exceptions=True, wait_first=True)
 def fetch_artists_task():
-    token = ArtistsService(Session()).get_spotify_token()
+    token = ArtistsService(LocalSession()).get_spotify_token()
     if not token:
         raise Exception("No spotify token found.")
 
-    artist_ids = ArtistsService(Session()).get_unchanged_artist_ids()
-    for artist in ArtistsService(Session()).fetch_artists(artist_ids, token):
+    artist_ids = ArtistsService(LocalSession()).get_unchanged_artist_ids()
+    for artist in ArtistsService(LocalSession()).fetch_artists(artist_ids, token):
         if artist and artist.get("id"):
-            ArtistsService(Session()).write_artist(artist, edited=datetime.now())
+            ArtistsService(LocalSession()).write_artist(artist, edited=datetime.now())
     logging.info("Finished fetching artists")
 
 
@@ -32,7 +32,7 @@ def fetch_artists_task():
 def get_artists(limit: int = 10, page: int = 1, search: str = ''):
     skip = (page - 1) * limit
 
-    artists = Session().query(Artist).filter(
+    artists = LocalSession().query(Artist).filter(
         Artist.title.contains(search)).limit(limit).offset(skip).all()
     return {'status': 'success', 'results': len(artists), 'artists': artists}
 
@@ -40,15 +40,14 @@ def get_artists(limit: int = 10, page: int = 1, search: str = ''):
 @router.post('/', status_code=status.HTTP_201_CREATED)
 def create_artist(payload: ArtistBaseSchema):
     new_artist = Artist(**payload.dict())
-    Session().add(new_artist)
-    Session().commit()
-    Session().refresh(new_artist)
+    LocalSession().add(new_artist)
+    LocalSession().commit()
     return {"status": "success", "artist": new_artist}
 
 
 @router.patch('/{artistId}')
 def update_artist(artistId: str, payload: ArtistBaseSchema):
-    artist_query = Session().query(Artist).filter(Artist.spotify_id == artistId)
+    artist_query = LocalSession().query(Artist).filter(Artist.spotify_id == artistId)
     db_artist = artist_query.first()
 
     if not db_artist:
@@ -57,14 +56,13 @@ def update_artist(artistId: str, payload: ArtistBaseSchema):
     update_data = payload.dict(exclude_unset=True)
     artist_query.filter(Artist.spotify_id == artistId).update(update_data,
                                                               synchronize_session=False)
-    Session().commit()
-    Session().refresh(db_artist)
+    LocalSession().commit()
     return {"status": "success", "artist": db_artist}
 
 
 @router.get('/{artistId}')
 def get_post(artistId: str):
-    artist = Session().query(Artist).filter(Artist.spotify_id == artistId).first()
+    artist = LocalSession().query(Artist).filter(Artist.spotify_id == artistId).first()
     if not artist:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"No artist with this id: {id} found")
@@ -73,11 +71,11 @@ def get_post(artistId: str):
 
 @router.delete('/{artistId}')
 def delete_post(artistId: str):
-    artist_query = Session().query(Artist).filter(Artist.spotify_id == artistId)
+    artist_query = LocalSession().query(Artist).filter(Artist.spotify_id == artistId)
     artist = artist_query.first()
     if not artist:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f'No artist with this id: {id} found')
     artist_query.delete(synchronize_session=False)
-    Session().commit()
+    LocalSession().commit()
     return Response(status_code=status.HTTP_204_NO_CONTENT)

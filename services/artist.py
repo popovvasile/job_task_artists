@@ -1,20 +1,17 @@
-import os
 from datetime import datetime
-from typing import Optional, List, Union
+from typing import Optional, List
 
 import httpx as httpx
 from sqlalchemy import select
-from sqlalchemy.orm import Session
 
 from config import Config
 from models.artist import Artist
-# from app.standalone_session import standalone_session
 from utils.db_utils import Transactional
 
 
 class ArtistsService:
     def __init__(self, session):
-        self.session = session()
+        self.session = session
 
     def get_spotify_token(self) -> str:
         url = "https://accounts.spotify.com/api/token"

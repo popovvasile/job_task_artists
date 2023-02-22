@@ -1,6 +1,6 @@
 from functools import wraps
 
-from sessions.session import Session
+from sessions.session import LocalSession
 
 
 class Transactional:
@@ -9,9 +9,9 @@ class Transactional:
         async def _transactional(*args, **kwargs):
             try:
                 result = await func(*args, **kwargs)
-                await Session.commit()
+                await LocalSession.commit()
             except Exception as e:
-                await Session.rollback()
+                await LocalSession.rollback()
                 raise e
 
             return result
